@@ -10,7 +10,10 @@ def parse_arguments():
 args = parse_arguments()
 
 file_path = args.file
+
 with open(file_path, 'r') as file:
     for line in file:
-        print(line.strip())
+        clean_line = line.strip()
+        if not clean_line:
+            continue
         
