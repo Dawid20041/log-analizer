@@ -1,6 +1,6 @@
 import argparse
 import re
-
+from collections import Counter
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Log Analyzer")
 
@@ -25,8 +25,11 @@ with open(file_path, 'r') as file:
         ip_counter.append(ip_address)
         endpoint_counter.append(endpoint)
         status_counter.append(status)
-        
+
         print(f"IP: {ip_address}, Time: {time}, Method: {method}, Endpoint: {endpoint}, Request: {request}, Status: {status}")
     print(f"Unique IPs: {len(set(ip_counter))}")
     print(f"Unique Endpoints: {len(set(endpoint_counter))}")
-    print(f"Unique Status Codes: {len(set(status_counter))}")
+    print(f"Unique Status Codes: {len(set(status_counter))}\n")
+    print(f"Top 5 IPs: {Counter(ip_counter).most_common(5)}")
+    print(f"Top 5 Endpoints: {Counter(endpoint_counter).most_common(5)}")
+    print(f"Top 5 Status Codes: {Counter(status_counter).most_common(5)}")
