@@ -1,0 +1,16 @@
+import argparse
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Log Analyzer")
+
+    parser.add_argument("file", help="Path to log file")
+    return parser.parse_args()
+
+args = parse_arguments()
+
+file_path = args.file
+with open(file_path, 'r') as file:
+    for line in file:
+        print(line.strip())
+        
