@@ -16,5 +16,5 @@ with open(file_path, 'r') as file:
         clean_line = line.strip()
         if not clean_line:
             continue
-        wynik = re.split(r'["\-\[\]\s]+', clean_line)
-        print(wynik)
+        ip_address, time, method, endpoint, request, status = re.split(r'["\-\[\]\s]+', clean_line)
+        print(f"IP: {ip_address}, Time: {time}, Method: {method}, Endpoint: {endpoint}, Request: {request}, Status: {status}")
