@@ -40,7 +40,7 @@ with open(file_path, 'r') as file:
             errors.append(clean_line)
             error_counter[endpoint] += 1
 
-        request_counter[line] += 1
+        request_counter["requests"] += 1
         ip_counter[ip_address] += 1
         endpoint_counter[endpoint] += 1
         status_counter[status] += 1
