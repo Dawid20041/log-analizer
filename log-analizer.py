@@ -10,6 +10,7 @@ def parse_arguments():
 args = parse_arguments()
 
 file_path = args.file
+errors = []
 
 request_counter = Counter()
 ip_counter = Counter()
@@ -22,6 +23,8 @@ with open(file_path, 'r') as file:
         if not clean_line:
             continue
         ip_address, timestamp, method, endpoint, request, status = re.split(r'["\-\[\]\s]+', clean_line)
+        if status.startswith('5') or status.startswith('4'):
+            errors.append(clean_line)
 
         request_counter[line] += 1
         ip_counter[ip_address] += 1
@@ -36,6 +39,10 @@ def printing():
     print(f"Top 5 IPs: {Counter(ip_counter).most_common(5)}")
     print(f"Top 5 Endpoints: {Counter(endpoint_counter).most_common(5)}")
     print(f"Top 5 Status Codes: {Counter(status_counter).most_common(5)}")
+    print(f"Errors: {len(errors)}")
+    print(f"Errors Details:")
+    for error in errors:
+        print(f"  {error}")
 printing()
 
     
