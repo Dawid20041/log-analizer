@@ -18,6 +18,7 @@ request_counter = Counter()
 ip_counter = Counter()
 endpoint_counter = Counter()
 status_counter = Counter()
+error_counter = Counter()
 
 with open(file_path, 'r') as file:
     for line in file:
@@ -33,9 +34,11 @@ with open(file_path, 'r') as file:
         timestamp = match.group(2)
         method = match.group(3)
         endpoint = match.group(4)
+        endpoint = endpoint.split('?')[0]
         status = match.group(5)
         if status.startswith('5') or status.startswith('4'):
             errors.append(clean_line)
+            error_counter[endpoint] += 1
 
         request_counter[line] += 1
         ip_counter[ip_address] += 1
@@ -47,10 +50,18 @@ def printing():
     print(f"Unique IPs: {len(set(ip_counter))}")
     print(f"Unique Endpoints: {len(set(endpoint_counter))}")
     print(f"Unique Status Codes: {len(set(status_counter))}\n")
-    print(f"Top 5 IPs: {ip_counter.most_common(5)}")
-    print(f"Top 5 Endpoints: {endpoint_counter.most_common(5)}")
-    print(f"Top 5 Status Codes: {status_counter.most_common(5)}")
-    print(f"Errors: {len(errors)}")
+    print(f"Top 5 IPs: ")
+    for ip, count in ip_counter.most_common(5):
+        print(f"{ip} -> {count}")
+    print(f"Top 5 Endpoints: ")
+    for endpoint, count in endpoint_counter.most_common(5):
+        print(f"{endpoint} -> {count}")
+    print(f"Top 5 Status Codes: ")
+    for status, count in status_counter.most_common(5):
+        print(f"{status} -> {count}")
+    print("Top Error Endpoints:")
+    for endpoint, count in error_counter.most_common(5):
+        print(f"{endpoint} -> {count}")
     print(f"Errors Details:")
     for error in errors:
         print(f"  {error}")
